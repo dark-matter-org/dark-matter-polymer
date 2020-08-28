@@ -1,0 +1,28 @@
+// Generated from: org.dmd.dsd.tools.dsdwizard.DSLArtifactGenerator.createSchemaFile(DSLArtifactGenerator.java:303)
+
+SchemaDefinition
+name              mdl
+schemaBaseID      1000000
+schemaIDRange     100000
+generatedFileHeader apache-2-0.txt
+dependsOn         dmv
+dependsOn         dmconcinnity
+defFiles          types.dmd
+defFiles          complex.dmd
+defFiles          attributes.dmd
+defFiles          classes.dmd
+// 5000
+defFiles          mapping-types.dmd
+defFiles          mapping-complex.dmd
+defFiles          mapping-attributes.dmd
+defFiles          mapping-classes.dmd
+// 6000
+defFiles          plastic-types.dmd
+defFiles          plastic-complex.dmd
+defFiles          plastic-attributes.dmd
+defFiles          plastic-classes.dmd
+defFiles          module.dmd
+schemaPackage     com.connectifex.polymer.mdl.shared
+dmwPackage        com.connectifex.polymer.mdl.server
+description       This is the schema definition for the Mapping Definition Language (MDL) domain-specific language.
+

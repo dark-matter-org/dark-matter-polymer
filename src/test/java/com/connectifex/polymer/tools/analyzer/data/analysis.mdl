@@ -1,0 +1,19 @@
+MdlModule
+name analysis
+
+PlasticPattern
+name functionSignature
+//pattern (^[A-Za-z]+)(\d+(\.\d+)?)$
+pattern ^([\w\s]+)[(]([\w\s,]+)[)\s{]+$
+group 1 returnTypeAndFunctionName 	note="The part before the first round bracket"
+group 2 functionArguments 			note="The part after the slash"
+description	Implements the pattern matching used in Chapter 7 of the plastic tutorial. 
+
+PatternTest
+name 		functionSignature-test1
+usePattern 	functionSignature
+input 		"void tweakInputs(Map inputs, Object payload) {"
+expectThat	returnTypeAndFunctionName "void tweakInputs"
+expectThat	functionArguments "Map inputs, Object payload"
+description Because we've indicated expectThat, we expect the match to be successful.
+

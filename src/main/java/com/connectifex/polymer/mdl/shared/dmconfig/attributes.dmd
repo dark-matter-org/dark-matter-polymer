@@ -1,0 +1,60 @@
+// Generated from: org.dmd.dsd.tools.dsdwizard.DSLArtifactGenerator.createAttributesFile(DSLArtifactGenerator.java:375)
+
+AttributeDefinition
+name           definedInMdlModule
+dmdID          1
+type           MdlModule
+description    Indicates that a definition came from this module.
+
+AttributeDefinition
+name           dependsOnMdlModule
+dmdID          2
+type           MdlModule
+valueType      MULTI
+description    Allows us to use definitions from another MdlModule
+
+AttributeDefinition
+name           	title
+dmdID          	20
+type           	String
+description <font color="red">base:</font> The title for something.
+
+AttributeDefinition
+name           	notes
+dmdID          	21
+type           	String
+valueType		MULTI
+description 	<font color="red">base:</font> Notes associated with something.
+
+AttributeDefinition
+name           	insertTracingInMorpher
+dmdID          	22
+type           	Boolean
+description 	<font color="red">base:</font> A flag to indicate we want to insert
+ tracing code in the Morpher methods: tweakInputs, tweakValues, tweakParsed. Calls
+ are made to the common library class PolymerTrace. When specified at the MdlModule level,
+ we insert the tracing in all generated Morphers. This can also be specified for individual
+ PlasticMappings.
+
+AttributeDefinition
+name           	ignoreUnusedInputs
+dmdID          	23
+type           	Boolean
+description		Indicates that we want to ignore unused inputs in generated Morphers. This may be
+ specified at the MdlModule level or on individual PlasticMappings.
+
+AttributeDefinition
+name           	ignoreUnusedOutputs
+dmdID          	24
+type           	Boolean
+description		Indicates that we want to ignore unused outputs in generated Morphers. This may be
+ specified at the MdlModule level or on individual PlasticMappings.
+ 
+AttributeDefinition
+name           allowPlasticGenErrors
+dmdID          25
+type           Boolean
+description    <font color="red">base:</font>This allows us to generate Plastic schemas
+ that have errors e.g. missing inputs, outputs etc. This is primarily to allow for generation
+ of the initial tutorial schemas and then to demo preventing these errors.
+

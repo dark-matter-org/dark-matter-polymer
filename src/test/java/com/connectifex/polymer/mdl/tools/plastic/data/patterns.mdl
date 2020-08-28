@@ -1,0 +1,106 @@
+MdlModule
+name patterns
+//insertTracingInMorpher		true
+//allowPlasticGenErrors		true
+description Mappings that exercise the PlasticPattern mechanisms.
+
+FolderStructure
+name        patterns-structure
+inFolder1   pattern-in
+outFolder1  pattern-out
+description Provide a description of your chosen folder structure.
+
+PlasticMapping
+name			pattern01
+folderStructure	patterns-structure
+variables var1 validate=slashSeparated
+inputSchema {
+	"something": "${var1}"
+ }
+outputSchema {
+	"somethingelse": "${var1}"
+ }
+description This will exercise the use of a PlasticPattern for validation of the content
+ of var1.
+
+PlasticTest
+name 	pattern01-test1
+mapping	pattern01
+inputPayload {
+	  "something": "one two/three four",
+	}
+description This should be fine, we're following the pattern.
+
+PlasticTest
+name 	pattern01-test2
+mapping	pattern01
+inputPayload {
+	  "something": "one two three four",
+	}
+description This should fail, we're missing the slash.
+
+///////////////////////////////////////////////////////////////////////////////
+ 
+PlasticPattern
+name slashSeparated
+//pattern (^[A-Za-z]+)(\d+(\.\d+)?)$
+pattern ([^/]+)/([^/]+)$
+group 1 part1 note="The part before the slash"
+group 2 part2 note="The part after the slash"
+description	Implements the pattern matching used in Chapter 7 of the plastic tutorial. 
+
+PatternTest
+name 		slashSeparatedTest1
+usePattern 	slashSeparated
+input 		"one two/three four"
+expectThat	part1 "one two"
+expectThat	part2 "three four"
+description Because we've indicated expectThat, we expect the match to be successful.
+
+PatternTest
+name 		slashSeparatedTest2
+usePattern 	slashSeparated
+input 		"one two three four"
+description Because we haven't indicated expectThat, we expect the match to fail.
+
+PlasticMapping
+name			pattern02
+folderStructure	patterns-structure
+variables var1 split=slashSeparated
+variables part1 note="Created by splitting"
+variables part2 note="Created by splitting"
+inputSchema {
+	"something": "${var1}"
+ }
+outputSchema {
+// For now, we remove the original variable, eventually we may want the option to leave it available
+//	"somethingelse": "${var1}",
+	"firstPart": "${part1}",
+	"secondPart": "${part2}"
+ }
+description This will exercise the use of a PlasticPattern for validation of the content
+ of var1.
+
+PlasticTest
+name 	pattern02-test1
+mapping	pattern02
+inputPayload {
+	  "something": "one two/three four",
+	}
+description This should be fine, we're following the pattern.
+
+PlasticPattern
+name functionSignature
+//pattern (^[A-Za-z]+)(\d+(\.\d+)?)$
+pattern ^([\w\s]+)[(]([\w\s,]+)[)\s{]+$
+group 1 returnTypeAndFunctionName 	note="The part before the first round bracket"
+group 2 functionArguments 			note="The part after the slash"
+description	Implements the pattern matching used in Chapter 7 of the plastic tutorial. 
+
+PatternTest
+name 		functionSignature-test1
+usePattern 	functionSignature
+input 		"void tweakInputs(Map inputs, Object payload) {"
+expectThat	returnTypeAndFunctionName "void tweakInputs"
+expectThat	functionArguments "Map inputs, Object payload"
+description Because we've indicated expectThat, we expect the match to be successful.

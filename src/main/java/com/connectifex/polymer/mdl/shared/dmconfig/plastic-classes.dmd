@@ -1,0 +1,186 @@
+// Generated from: org.dmd.dsd.tools.dsdwizard.DSLArtifactGenerator.createClassFile(DSLArtifactGenerator.java:353)
+
+ClassDefinition
+name                        PlasticBaseDefinition
+classType                   ABSTRACT
+dmdID                       6000
+useWrapperType              EXTENDED
+subpackage					plastic
+derivedFrom                 MdlDefinition
+isNamedBy                   name
+must                        name
+description                 <font color="red">plastic:</font>This is the module definition for the MDL domain-specific language.
+
+
+ClassDefinition
+name                        PlasticMapping
+classType                   STRUCTURAL
+dmdID                       6001
+useWrapperType              EXTENDED
+subpackage					plastic
+derivedFrom                 PlasticBaseDefinition
+isNamedBy                   name
+must                        name
+must						variables
+may							morpherInVariables
+may							morpherOutVariables
+may							inputVersion
+may							inputType
+must						inputSchema
+may							outputVersion
+may							outputType
+must						outputSchema
+must						folderStructure
+may							insertTracingInMorpher
+may							ignoreUnusedInputs
+may							ignoreUnusedOutputs
+may							allowPlasticGenErrors
+may							description
+description                 <font color="red">plastic:</font>The PlasticMapping class allows you
+ define a single plastic mapping from an input schema to either a single or multiple output schemas.
+ It allows you to indicate the folder structure to be used for the generated files as well as the
+ input/ouput versions and types. It also let's you define the parameters along with example vaules, notes
+ and whether or not the parameter is optional (this is used in generating the morpher).
+
+ClassDefinition
+name                        FolderStructure
+classType                   STRUCTURAL
+dmdID                       6002
+useWrapperType              EXTENDED
+subpackage					plastic
+derivedFrom                 PlasticBaseDefinition
+isNamedBy                   name
+must                        name
+must						inFolder1
+may							inFolder2
+may							inFolder3
+must						outFolder1
+may							outFolder2
+may							outFolder3
+may							description
+description                 <font color="red">plastic:</font>The FolderStructure class allows you to
+ specify a folder structure to be used by a collection of PlasticMappings so that you don't have
+ to repeat it over and over again.
+
+ClassDefinition
+name                        InputSchema
+classType                   STRUCTURAL
+dmdID                       6003
+useWrapperType              EXTENDED
+subpackage					plastic
+derivedFrom                 PlasticBaseDefinition
+isNamedBy                   name
+must                        name
+must						variables
+must						inputSchema
+may							description
+description                 <font color="red">plastic:</font>The InputSchema allows for the definition
+ of a reusable input schema. In several cases, the polymer utility allows for the generation of input 
+ schemas, but has no way to know the associated output schema, so this allows us to capture an
+ inputs schema with all of it's associated variables.
+
+ClassDefinition
+name                        PlasticTest
+classType                   STRUCTURAL
+dmdID                       6010
+useWrapperType              EXTENDED
+subpackage					plastic
+derivedFrom                 PlasticBaseDefinition
+isNamedBy                   name
+must                        name
+must						mapping
+must						inputPayload
+may							expectedResult
+may							description
+description                 <font color="red">plastic:</font> The PlasticTests class allows you to
+ define a payload that can be used to test a particular mapping.
+
+ClassDefinition
+name                        YangChoice
+classType                   STRUCTURAL
+dmdID                       6011
+useWrapperType              EXTENDED
+subpackage					plastic
+derivedFrom                 PlasticBaseDefinition
+isNamedBy                   name
+must                        name
+must						cases
+may							description
+description                 <font color="red">plastic:</font> The YangChoice is used to 
+ describe information associated with YANG choice definitions and their associated case
+ statements. A choice indicates that one of several forms of the schema may exist at a
+ location in the JSON structure, but only one of these forms may exist at a time.
+ <p/>
+ A variables definition may reference a YangChoice to make it clear that the variable is
+ actually optional, but it will depend on the context of the choice. Basically, the variable's
+ optionality depends on the form of the incoming schema.
+ <p/>
+ Code is generated to rmeove variables associated with the cases that don't exist.
+
+ClassDefinition
+name                        PolymerValidator
+classType                   ABSTRACT
+dmdID                       6030
+useWrapperType              EXTENDED
+subpackage					validation
+derivedFrom                 PlasticBaseDefinition
+usesWrapperInterface		com.connectifex.polymer.mdl.server.extended.ValidatorGeneratorIF
+isNamedBy                   name
+must                        name
+description <font color="red">plastic:</font> The PolymerValidator provides a common base for the specification of input
+ validation behaviour. The derived class doesn't actually implement the validation behaviour,
+ it implements methods that allow for generation of the Groovy code required to implement
+ the behaviour. This is because we will often rely on there being instance data against
+ which the validation is performed e.g. a set of string values, and that must be included
+ in the Morpher we generate.
+
+ClassDefinition
+name                        ValueSet
+classType                   STRUCTURAL
+dmdID                       6031
+useWrapperType              EXTENDED
+subpackage					validation
+derivedFrom                 PolymerValidator
+isNamedBy                   name
+must                        name
+must						values
+description <font color="red">plastic:</font> The ValueSet allows for the specification of PolymerValidator that verifies
+ that a variable conforms to an allowed set of String values.
+
+ClassDefinition
+name                        PlasticPattern
+classType                   STRUCTURAL
+dmdID                       6040
+useWrapperType              EXTENDED
+derivedFrom                 PolymerValidator
+isNamedBy                   name
+subpackage                  plastic
+must                        name
+must						pattern
+may							group
+may							normalizedForm
+may							description
+description <font color="red">plastic:</font> The PlasticPattern defines a Java regular expression with
+ optional subgroupings that can be used in a variety of contexts. Patterns can be used as part of a validation
+ for a variable or as a means of creating multiple variables from a single variable.	
+ </p>
+ Note that the validation aspect provides us with a generic type check mechanism i.e. you could create
+ patterns for Integers, Floats, Strings etc. 
+
+ClassDefinition
+name                        PatternTest
+classType                   STRUCTURAL
+dmdID                       6041
+useWrapperType              EXTENDED
+derivedFrom                 PlasticBaseDefinition
+isNamedBy                   name
+subpackage                  plastic
+must                        name
+must						usePattern
+must						input
+may							expectThat
+may							description
+description The PatternTest allows us to run polymer pat and ensure that our defined PlasticPatterns
+ are doing what we want them to. If you specify expectedThat, it means that you expect the pattern to
+ be matched with the indicated values. If you don't specify expectedThat values, it means you expect
+ the matching to fail.

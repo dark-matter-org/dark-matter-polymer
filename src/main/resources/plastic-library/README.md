@@ -1,0 +1,1 @@
+All .groovy files dropped here will be copied to the generated lib folder

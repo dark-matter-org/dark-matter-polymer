@@ -1,0 +1,20 @@
+EnumDefinition
+name             SchemaTypeEnum
+nullReturnValue	 SchemaTypeEnum.JSON
+enumValue		0 JSON		The schemas is JSON.
+//enumValue		1 XML 		The schema is XML.
+
+TypeDefinition
+name 			PlasticSchema
+typeClassName	com.connectifex.polymer.mdl.shared.types.DmcTypePlasticSchema
+primitiveType	com.connectifex.polymer.mdl.shared.types.PlasticSchema
+description		The PlasticSchema provides support for the definition of a string with
+ embedded variable names. Variables are designated using plastic conventions as follows - {$variable}
+
+EnumDefinition
+name             PlasticResultEnum
+nullReturnValue	 PlasticResultEnum.OKAY
+enumValue		0 OKAY					No errors/warnings found.
+enumValue		1 MISSING_INPUT 		Input variable missing.
+enumValue		2 NO_MATCHING_OUTPUT 	No matching output variable for an input variable.
+enumValue		1 NO_MATCHING_INPUT 	No matching input variable for an output variable.

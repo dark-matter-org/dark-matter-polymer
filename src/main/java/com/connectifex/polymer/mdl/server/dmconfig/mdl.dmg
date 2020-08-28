@@ -1,0 +1,9 @@
+// Generated from: org.dmd.dsd.tools.dsdwizard.DSLArtifactGenerator.createDmgFile(DSLArtifactGenerator.java:417)
+
+DmgConfig
+genPackage    		com.connectifex.polymer.mdl.server
+schemaToLoad  		mdl
+generator     		org.dmd.dmg.generators.DMWGenerator
+generatedFileHeader apache-2-0.txt
+description   		We generate wrappers for the mul definitions.
+

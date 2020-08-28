@@ -1,0 +1,13 @@
+// Generated from: org.dmd.dsd.tools.dsdwizard.DSLArtifactGenerator.createClassFile(DSLArtifactGenerator.java:353)
+
+ClassDefinition
+name                        MdlDefinition
+classType                   ABSTRACT
+dmdID                       2
+useWrapperType              EXTENDED
+derivedFrom                 DSDefinition
+isNamedBy                   name
+must                        name
+must                        definedInMdlModule
+description                 This is the module definition for the mul domain-specific language.
+

@@ -1,0 +1,18 @@
+// Generated from: org.dmd.dsd.tools.dsdwizard.DSLArtifactGenerator.createModuleFile(DSLArtifactGenerator.java:330)
+
+DSDefinitionModule
+name                        MdlModule
+fileExtension               mdl
+dmdID                       1
+moduleClassName             MdlModule
+moduleDependenceAttribute   dependsOnMdlModule
+baseDefinition              MdlDefinition
+definedInModuleAttribute    definedInMdlModule
+refersToDefsFromDSD         ConcinnityModule
+supportDynamicSchemaLoading true
+may							insertTracingInMorpher
+may							ignoreUnusedInputs
+may							ignoreUnusedOutputs
+may							allowPlasticGenErrors
+description                 This is the module definition for the MDL domain-specific language.
+

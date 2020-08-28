@@ -1,0 +1,122 @@
+AttributeDefinition
+name           		directives
+dmdID          		5001
+type           		MappingDirective
+valueType			MULTI
+description 	<font color="red">mapping:</font> The various directives that comprise the mapping.
+
+AttributeDefinition
+name           		fromModel
+dmdID          		5002
+type           		YangModelInfo
+description 	<font color="red">mapping:</font> The model from which we're mapping.
+
+AttributeDefinition
+name           		toModels
+dmdID          		5003
+type           		YangModelInfo
+valueType			MULTI
+description 	<font color="red">mapping:</font> The models to which we're mapping.
+
+AttributeDefinition
+name           		typeModels
+dmdID          		5004
+type           		YangModelInfo
+valueType			MULTI
+description 	<font color="red">mapping:</font> The models from which we're accessing types.
+
+AttributeDefinition
+name           		conversionNotes
+dmdID          		5005
+type           		String
+valueType			MULTI
+description 	<font color="red">mapping:</font> Notes regarding conversion between values.
+ 
+AttributeDefinition
+name           		complexSeparator
+dmdID          		5006
+type           		String
+description 	<font color="red">mapping:</font> The separator to be used when concatenating 
+ valus for a complex field.
+
+AttributeDefinition
+name           		enumValues
+dmdID          		5007
+type           		EnumValueInfo
+valueType			MULTI
+description 	<font color="red">mapping:</font> A list of enum value mappings.
+
+AttributeDefinition
+name           		fromAttrPath
+dmdID          		5008
+type           		String
+description 	<font color="red">mapping:</font> The URL path of the from attribute.
+
+AttributeDefinition
+name           		fromAttrName
+dmdID          		5009
+type           		String
+description 	<font color="red">mapping:</font> The from attribute name.
+
+AttributeDefinition
+name           		fromAttrType
+dmdID          		5010
+type           		String
+description 	<font color="red">mapping:</font> The from attribute type.
+
+AttributeDefinition
+name           		plasticPrefix
+dmdID          		5011
+type           		String
+description 	<font color="red">mapping:</font> The prefix for the plastic file name.
+
+AttributeDefinition
+name           		plasticVersion
+dmdID          		5012
+type           		String
+description 	<font color="red">mapping:</font> The version of the plastic mapping.
+
+AttributeDefinition
+name           		urlPrefix
+dmdID          		5013
+type           		String
+description 	<font color="red">mapping:</font> Indicates a common URL prefix that leads up 
+ to the model for which we’re defining the current mapping.
+
+AttributeDefinition
+name           		toAttrPath
+dmdID          		5014
+type           		String
+description 	<font color="red">mapping:</font> The URL path of the to attribute.
+
+AttributeDefinition
+name           		toAttrName
+dmdID          		5015
+type           		String
+description 	<font color="red">mapping:</font> The to attribute name.
+
+AttributeDefinition
+name           		toAttrType
+dmdID          		5016
+type           		String
+description 	<font color="red">mapping:</font> The to attribute type.
+
+AttributeDefinition
+name           		enumMapping
+dmdID          		5017
+type           		String
+description 	<font color="red">mapping:</font> An enum mapping for an attribute.
+
+AttributeDefinition
+name           		operations
+dmdID          		5018
+type           		RESTOperationTypeEnum
+valueType			MULTI
+description 	<font color="red">mapping:</font> The type of REST operation a mapping supports.
+
+AttributeDefinition
+name           		deviceSupport
+dmdID          		5019
+type           		DeviceSupportInfo
+valueType			MULTI
+description 	<font color="red">mapping:</font> The types of devices to be supported by a particular mapping.

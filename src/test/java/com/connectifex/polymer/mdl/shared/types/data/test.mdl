@@ -1,0 +1,33 @@
+MdlModule
+name test
+
+FolderStructure
+name 		tutorialStructure
+inFolder1	api-in  note="Gathering input schemas in one folder"
+outFolder1	api-out note="Gathering output schemas in another folder"
+
+PlasticMapping
+name			test1
+folderStructure	tutorialStructure
+variables admin-status   example="UP"
+variables max-delay-msec example="10"
+variables min-mtu        example="1500"
+inputVersion 	1.0
+inputType		JSON
+inputSchema   {
+    "admin-status":   "${admin-status}",
+    "max-delay-msec": "${max-delay-msec}",
+    "min-mtu":        "${min-mtu}"
+  }
+outputVersion	1.0
+outputType		JSON
+outputSchema {
+	  "admin": {
+	    "overall-status": "${admin-status}"
+	  },
+	  "network-element": {
+	    "mtu": "${min-mtu}",
+	    "max-delay": "${max-delay-msec}"
+	  }
+	}
+description This tutorial covers a simple, no code translation.

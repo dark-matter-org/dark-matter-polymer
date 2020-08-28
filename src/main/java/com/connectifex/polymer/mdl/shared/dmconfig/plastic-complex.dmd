@@ -1,0 +1,164 @@
+
+ComplexTypeDefinition
+name 			PlasticVariable
+requiredPart	String  			name		"The variable name as used in a schema."
+optionalPart	Boolean    			optional		"Indicates if the parameter is optional"
+optionalPart	String    			example			"An example value"  quoted=true
+optionalPart	String    			default			"A default value"  quoted=true
+optionalPart	PolymerValidator    validate		"References to one or more validators"  multivalued=true
+optionalPart	Boolean    			encodeURL		"Indicates that the variable will be used in a URL and must have certain characters escaped"
+optionalPart	PlasticPattern		split			"Indicates you want to split the variable with the specified pattern. The pattern must have 2 or more groups."
+optionalPart	String    			note			"Notes regarding the variable." quoted=true multivalued=true
+optionalPart	String    			type			"The type of the variable." quoted=true
+optionalPart	String    			units			"The units in which the variable is expressed." quoted=true
+optionalPart	YangChoice    		choice			"A reference to a YangChoice with which this variable is associated."
+description		The InsertableParameter type allows for the specification of a parameter
+ that is embedded in an input or output schema.
+ </p>
+ The micro grammar is:
+ <pre>
+ parameterName [optional example default validate* encodeURL note* type units choice]
+ </pre>
+ Where:
+ <ul>
+ <li>name - The variable name as used in a schema. </li>
+ </ul>
+ Optional:
+ <ul>
+ <li>optional  - Indicates if the parameter is optional </li>
+ <li>example   - An example value </li>
+ <li>default   - A default value </li>
+ <li>validate  - References to one or more validators </li>
+ <li>encodeURL - Indicates that the variable will be used in a URL and must have certain characters escaped. </li>
+ <li>split     - Indicates you want to split the variable with the specified pattern. The pattern must have 2 or more groups. </li>
+ <li>note      - Notes regarding the parameter. </li>
+ <li>type      - The type of the variable. </li>
+ <li>units     - The units in which the variable is expressed. </li>
+ <li>choice    - A reference to a YangChoice with which this variable is associated. </li>
+ </ul>
+ </p>
+ Example:
+ <pre>
+ interface-name example="xe/0/0/0" note="Use standard format for Juniper vMX interfaces"
+ description optional=true example="For circuit 12345"
+ </pre>
+
+ComplexTypeDefinition
+name 			FolderAndNote
+requiredPart	String  			name		"The folder name"
+optionalPart	String    			note		"A note regarding the folder naming conventions"  quoted=true
+description	The FolderAndNote type allow for the specification of a folder name and
+ any notes regarding the conventions involved.
+ </p>
+ The micro grammar is:
+ <pre>
+ name [note]
+ </pre>
+ Where:
+ <ul>
+ <li>name - The folder name </li>
+ </ul>
+ Optional:
+ <ul>
+ <li>note - A note regarding the folder naming conventions </li>
+ </ul>
+ </p>
+
+ComplexTypeDefinition
+name 			StringValue
+requiredPart	String  			value		"The value"
+optionalPart	String    			note		"A note regarding the value"  quoted=true
+description	The StringValue type allow for the specification of values for a ValueSet.
+ </p>
+ The micro grammar is:
+ <pre>
+ value [note]
+ </pre>
+ Where:
+ <ul>
+ <li>value - The value </li>
+ </ul>
+ Optional:
+ <ul>
+ <li>note - A note regarding the value </li>
+ </ul>
+ </p>
+
+ComplexTypeDefinition
+name			PlasticGroupAndName
+requiredPart	Integer		groupNumber		"The number of the pattern group"
+requiredPart    String		groupName		"The name of the pattern group"
+optionalPart    String		note			"An optional note" quoted=true
+tags GroovyGen
+description This is a pared down version of the original GroupAndName (ommiting the)
+ the normalization JavaScript stuff. 
+ The micro grammar is:
+ <pre>
+ groupNumber groupName [note]
+ </pre>
+ Where:
+ <ul>
+ <li>groupNumber - the number of the pattern group</li>
+ <li>groupName - the name of the pattern group</li>
+ </ul>
+ Optional parts:
+ <ul>
+ </li>
+ <li>note - an optional note</li>
+ </ul>
+
+ComplexTypeDefinition
+name			TestInput
+requiredPart    String		value		"The value to be pattern matched." quoted=true
+optionalPart    String		note		"An optional note" quoted=true
+description The micro grammar is:
+ <pre>
+ "value" [note]
+ </pre>
+ Where:
+ <ul>
+ <li>value       - The value to be pattern matched.</li>
+ </ul>
+ Optional parts:
+ <ul>
+ </li>
+ <li>note - an optional note</li>
+ </ul>
+
+ComplexTypeDefinition
+name			ExpectedGroupValue
+requiredPart    String		groupName		"The name of the pattern group"
+requiredPart    String		value			"The value that the group should have." quoted=true
+optionalPart    String		note			"An optional note" quoted=true
+description The micro grammar is:
+ <pre>
+ groupNumber "value" [note]
+ </pre>
+ Where:
+ <ul>
+ <li>groupNumber - the number of the pattern group</li>
+ <li>value       - The value that the group should have.</li>
+ </ul>
+ Optional parts:
+ <ul>
+ </li>
+ <li>note - an optional note</li>
+ </ul>
+
+ComplexTypeDefinition
+name			YangCase
+requiredPart    String		caseName	"The name of the case"
+optionalPart    String		var			"The name of a variable associated with the case" multivalued=true
+description The micro grammar is:
+ <pre>
+ caseName [var*]
+ </pre>
+ Where:
+ <ul>
+ <li>caseName - The name of the case</li>
+ </ul>
+ Optional parts:
+ <ul>
+ </li>
+ <li>var      - The name of a variable associated with the case</li>
+ </ul>

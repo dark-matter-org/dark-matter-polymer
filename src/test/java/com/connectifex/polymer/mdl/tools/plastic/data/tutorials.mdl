@@ -1,0 +1,592 @@
+MdlModule
+name tutorials
+//insertTracingInMorpher		true
+allowPlasticGenErrors		true
+description This module recreates the plastic tutorial by specifying, in the
+ Mapping Utility Language (MUL), the various examples contained in the tutorial.
+ The difference is that we can use this specification to generate the tutorial
+ examples and reduce the time/complexity required to create the file structures,
+ files (and naming conventions) and morphers.
+
+FolderStructure
+name 		tutorial
+inFolder1	api-in  note="Gathering input schemas in one folder"
+outFolder1	api-out note="Gathering output schemas in another folder"
+description This defines the top level name for the generated plastic files, in this
+ case tutorial. You may also specify the folder structure up to 3 levels deep for
+ input schemas and the output schemas. The final level of folder structure will always
+ be the version indication specified by the PlasticMapping e.g. R1.0, R2.2 etc.
+
+///////////////////////////////////////////////////////////////////////////////
+ 
+PlasticMapping
+name			tutorial01
+folderStructure	tutorial
+variables admin-status   example="UP" 
+variables max-delay-msec example="10"
+variables min-mtu        example="1500"
+//variables min-mtu        example="1500" default="1000"
+//inputVersion 	1.0
+//inputType		JSON
+inputSchema   {
+    "admin-status":   "${admin-status}",
+    "max-delay-msec": "${max-delay-msec}",
+    "min-mtu":        "${min-mtu}"
+  }
+//outputVersion	1.0
+//outputType		JSON
+outputSchema {
+	  "admin": {
+	    "overall-status": "${admin-status}"
+	  },
+	  "network-element": {
+	    "mtu": "${min-mtu}",
+	    "max-delay": "${max-delay-msec}"
+	  }
+	}
+description This tutorial covers a simple, no code translation.
+
+PlasticTest
+name 	tutorial01-test1
+mapping tutorial01
+inputPayload {
+	  "admin-status":   "UP",
+	  "min-mtu":        "1500",
+	  "max-delay-msec": "10"
+	}
+description All values provided.
+
+//PlasticTest
+//name    tutorial01-test2
+//mapping tutorial01
+//inputPayload {
+//	  "admin-status": "UP",
+////	  "min-mtu": "1500",
+//	  "max-delay-msec": "10"
+//	}
+//description Relying on defaults for min-mtu.
+
+///////////////////////////////////////////////////////////////////////////////
+
+PlasticMapping
+name			tutorial02
+folderStructure	tutorial
+variables admin-status   example="UP"
+variables max-delay-msec example="10"
+variables min-mtu        example="1500"
+inputSchema   {
+    "admin-status":   "${admin-status}",
+    "max-delay-msec": "${max-delay-msec}",
+    "min-mtu":        "${min-mtu}"
+  }
+outputSchema {
+	  "admin": {
+	    "overall-status": "${admin-status}"
+	  },
+	  "network-element": {
+	    "mtu": "${min-mtu}",
+	    "max-delay": "${max-delay-msec}"
+	  }
+	}
+description description From Chapter 5 - same input and output as tutorial01, but the test payload omits the
+ the delay value.
+
+PlasticTest
+name    tutorial02-test1
+mapping tutorial02
+inputPayload {
+	  "admin-status": "UP",
+	  "min-mtu": "1500"
+//	  "max-delay-msec": "10"
+	}
+expectedResult	MISSING_INPUT
+description Omit the delay and see the resulting error.
+
+///////////////////////////////////////////////////////////////////////////////
+
+PlasticMapping
+name			tutorial03
+folderStructure	tutorial
+variables status
+variables mtu
+variables delay
+variables jitter
+inputSchema {
+	  "admin-status": "${status}",
+	  "min-mtu": "${mtu}",
+	  "max-delay-msec": "${delay}",
+	  "max-jitter": "${jitter}"
+	}
+outputSchema {
+	  "admin": {
+	    "overall-status": "${status}"
+	  },
+	  "network-element": {
+	    "mtu": "${mtu}",
+	    "max-delay": "${delay}"
+	  }
+	}
+description From Chapter 5 - the jitter input doesn't have an output.
+ Initially allow for generation of buggy Plastic, by specfying allowPlasticGenErrors
+ in the module definition. But then turn that off and show the error during generation.
+
+PlasticTest
+name 	tutorial03-test1
+mapping	tutorial03
+inputPayload {
+	  "admin-status": "UP",
+	  "min-mtu": "1500",
+	  "max-delay-msec": "10",
+	  "max-jitter": 15
+	}
+description No matching output for the jitter variable.
+expectedResult NO_MATCHING_OUTPUT
+
+///////////////////////////////////////////////////////////////////////////////
+
+PlasticMapping
+name			tutorial04
+folderStructure	tutorial
+variables status
+variables mtu
+variables delay
+inputSchema {
+	  "admin-status": "${status}",
+	  "min-mtu": "${mtu}",
+	  "max-delay-msec": "${delay}"
+	}
+outputSchema {
+	  "admin": {
+	    "overall-status": "${status}"
+	  },
+	  "network-element": {
+	    "mtu": "${mtu}",
+	    "max-delay": "${delay}",
+	    "max-jitter": "${jitter}"
+	  }
+	}
+description From Chapter 5 - the jitter output doesn't have an input.
+
+PlasticTest
+name 	tutorial04-test1
+mapping	tutorial04
+inputPayload {
+	  "admin-status": "UP",
+	  "min-mtu": "1500",
+	  "max-delay-msec": "10"
+	}
+description No matching input for the output jitter variable.
+expectedResult NO_MATCHING_INPUT
+
+///////////////////////////////////////////////////////////////////////////////
+
+PlasticMapping
+name			tutorial05
+folderStructure	tutorial
+variables dName
+variables iName
+variables addr[*]
+variables pref-len[*]
+inputSchema {
+	  "deviceName": "${dName}",
+	  "interfaceName": "${iName}",
+	  "addresses": [
+	    {
+	      "address": "${addr[*]}",
+	      "prefix-length": "${pref-len[*]}"
+	    }
+	  ]
+	}
+outputSchema {
+	  "dev-name": "${dName}",
+	  "interface-name": "${iName}",
+	  "objects": [
+	    {
+	      "subnet": "${addr[*]}/${pref-len[*]}"
+	    }
+	  ]
+	}
+description From Chapter 6 - arrayed variables.
+
+PlasticTest
+name 	tutorial05-test1
+mapping	tutorial05
+inputPayload {
+	  "deviceName": "CXP-2501",
+	  "interfaceName": "TCP/1/0/24",
+	  "addresses": [
+	    {
+	      "address": "10.10.100.100",
+	      "prefix-length": "24"
+	    },
+	    {
+	      "address": "10.10.100.221",
+	      "prefix-length": "24"
+	    },
+	    {
+	      "address": "10.10.100.168",
+	      "prefix-length": "24"
+	    }
+	  ]
+	}
+expectedResult	OKAY
+
+///////////////////////////////////////////////////////////////////////////////
+
+PlasticMapping
+name			tutorial06
+folderStructure	tutorial
+//variables status
+variables status default="DOWN" validate=statusEnum
+variables mtu
+variables delay
+inputSchema {
+	  "admin-status": "${status}",
+	  "min-mtu": "${mtu}",
+	  "max-delay-msec": "${delay}"
+	}
+outputSchema {
+	  "admin": {
+	    "overall-status": "${status}"
+	  },
+	  "network-element": {
+	    "mtu": "${mtu}",
+	    "max-delay": "${delay}"
+	  }
+	}
+description Shows the use of tweakInputs() to do input validation
+
+PlasticTest
+name 	tutorial06-test1
+mapping	tutorial06
+inputPayload {
+	  "admin-status": "UP",
+	  "min-mtu": "1500",
+	  "max-delay-msec": "10"
+	}
+
+PlasticTest
+name 	tutorial06-test2
+mapping	tutorial06
+inputPayload {
+	  "admin-status": "SIDEWAYS",
+	  "min-mtu": "1500",
+	  "max-delay-msec": "10"
+	}
+
+
+ValueSet
+name statusEnum
+values UP
+values DOWN note="The resource is not operative."
+description	The allowed values for the status variable.
+
+//SetMapping
+//inSet X
+//outSet Y
+//mapValue X.1 Y.1
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+PlasticMapping
+name			tutorial07
+folderStructure	tutorial
+variables node encodeURL=true
+variables address
+variables port
+inputSchema {
+	  "node": "${node}",
+	  "address": "${address}",
+	  "port": "${port}"
+	}
+outputSchema {
+	  "network-element": {
+//        "id": "${node-urlencoded}",
+        "id": "${node}",
+	    "ip-address": "${address}",
+	    "port": "${port}"
+	  }
+	}
+description Use of URL encoding. shows the use of tweakValues() to create a URL encoded output variable.
+ However, for polymer, you simply flag the variable as needing URL encoding, and you're good to go.
+
+PlasticTest
+name 	tutorial07-test1
+mapping	tutorial07
+inputPayload {
+	  "node": "CXP-9<Q>",
+	  "address": "10.10.100.100",
+	  "port": 1234
+	}
+
+///////////////////////////////////////////////////////////////////////////////
+
+PlasticMapping
+name			tutorial08
+folderStructure	tutorial
+variables MTU   			example="9150" 			optional=true
+variables ADDRESS4[*] 		example="192.168.1.1"
+variables ADDRESS4LEN[*]   	example="24" default="24"
+//variables ADDRESS4LEN[*]   	example="24"
+insertTracingInMorpher		true
+inputSchema {
+	  "interface-name": "intf-1/123",
+	  "device-name": "dev123",
+	  "interface-type": "iana-if-type:other",
+	  "action": "CREATE",
+	  "description": "This is an interface",
+	  "mtu": "${MTU}",
+	  "vlan-id": "22",
+	  "ip-addresses-v4": [
+	    {
+	      "ip-address": "${ADDRESS4[*]}",
+	      "prefix-length": "${ADDRESS4LEN[*]}"
+	    }
+	  ]
+	}
+outputSchema {
+  "interface": [
+        {
+          "name": "intf-1/123",
+          "description": "This is an interface",
+          "mtu": "${MTU}",
+          "vlan-interface-std:vlan": {
+            "ip-management-vlan-std:ip": {
+              "address": [
+                {
+                  "ip": "${ADDRESS4[*]}",
+                  "prefix-length": "${ADDRESS4LEN[*]}"
+                }
+              ]
+            }
+          },
+          "type": "vlan-interface-std:l3ipvlan"
+        }
+      ]
+    }
+description This tutorial covers arrayed variables and is described in Chapter 6 of
+ the https://github.com/opendaylight/plastic/blob/master/docs/Plastic-Tutorial-1%20-%20No%20Coding.rst 
+
+PlasticTest
+name 	tutorial08-test1
+mapping tutorial08
+inputPayload {
+	  "interface-name": "intf-1/123",
+	  "device-name": "dev123",
+	  "interface-type": "iana-if-type:other",
+	  "action": "CREATE",
+	  "description": "This is an interface",
+	  "vlan-id": "22",
+	  "ip-addresses-v4": [
+	    {
+	      "ip-address": "192.168.1.1",
+	      "prefix-length": "24"
+	    },
+	    {
+	      "ip-address": "192.168.2.1",
+	      "prefix-length": "24"
+	    }
+	  ]
+	}
+description This payload contains the IP address information, but no value for MTU.
+
+PlasticTest
+name 	tutorial08-test2
+mapping tutorial08
+inputPayload {
+	  "interface-name": "intf-1/123",
+	  "device-name": "dev123",
+	  "interface-type": "iana-if-type:other",
+	  "action": "CREATE",
+	  "description": "This is an interface",
+	  "vlan-id": "22",
+	  "ip-addresses-v4": [
+	    {
+	      "ip-address": "192.168.1.1",
+	      "prefix-length": "24"
+	    },
+	    {
+	      "ip-address": "192.168.2.1",
+	      "prefix-length": "24"
+	    },
+	    {
+	      "ip-address": "192.168.3.1"
+	    }
+//	    },
+//	    {
+//		  "ip-address": "192.168.4.1",
+//		  "prefix-length": "24"
+//		}
+	  ]
+	}
+description This payload contains the IP address information, but no value for MTU.
+
+
+PlasticTest
+name 	tutorial08-test3
+mapping tutorial08
+inputPayload {
+	  "interface-name": "intf-1/123",
+	  "device-name": "dev123",
+	  "interface-type": "iana-if-type:other",
+	  "action": "CREATE",
+	  "description": "This is an interface",
+//	  "mtu": "9150",
+	  "vlan-id": "22"
+	}
+description This payload contains the MTU, but no IP address information.
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+PlasticMapping
+name			polymer01
+folderStructure	tutorial
+variables admin-status   example="UP" default="UP"
+variables max-delay-msec example="10"
+variables min-mtu        example="1500"
+inputSchema   {
+    "admin-status":   "${admin-status}",
+    "max-delay-msec": "${max-delay-msec}",
+    "min-mtu":        "${min-mtu}"
+  }
+outputSchema {
+	  "admin": {
+	    "overall-status": "${admin-status}"
+	  },
+	  "network-element": {
+	    "mtu": "${min-mtu}",
+	    "max-delay": "${max-delay-msec}"
+	  }
+	}
+description Using scalar defaults.
+
+PlasticTest
+name 	polymer01-test1
+mapping polymer01
+inputPayload {
+	  "min-mtu":        "1500",
+	  "max-delay-msec": "10"
+	}
+
+PlasticMapping
+name			polymer02
+folderStructure	tutorial
+variables MTU   			example="9150" 			optional=true
+variables ADDRESS4[*] 		example="192.168.1.1"
+variables ADDRESS4LEN[*]   	example="24" default="24"
+variables val1[*]
+variables val2[*]
+//insertTracingInMorpher		true
+inputSchema {
+	  "interface-name": "intf-1/123",
+	  "device-name": "dev123",
+	  "interface-type": "iana-if-type:other",
+	  "action": "CREATE",
+	  "description": "This is an interface",
+	  "mtu": "${MTU}",
+	  "vlan-id": "22",
+	  "ip-addresses-v4": [
+	    {
+	      "ip-address": "${ADDRESS4[*]}",
+	      "prefix-length": "${ADDRESS4LEN[*]}",
+	      "array2": [
+	           {
+	        	   "val1": "${val1[*]}",
+	        	   "val2": "${val2[*]=0}"
+	           }
+	      ]
+	    }
+	  ]
+	}
+outputSchema {
+	"interface": [
+      {
+        "name": "intf-1/123",
+        "description": "This is an interface",
+        "mtu": "${MTU}",
+        "vlan-interface-std:vlan": {
+          "ip-management-vlan-std:ip": {
+            "address": [
+              {
+                "ip": "${ADDRESS4[*]}",
+                "prefix-length": "${ADDRESS4LEN[*]}",
+          	      "array2": [
+      		           {
+      		        	   "val1": "${val1[*]}",
+      		        	   "val2": "${val2[*]}"
+      		           }
+      		       ]
+              }
+            ]
+          }
+        },
+        "type": "vlan-interface-std:l3ipvlan"
+      }
+    ]
+  }
+description Using scalar defaults.
+
+PlasticTest
+name 	polymer02-test1
+mapping polymer02
+inputPayload {
+	  "interface-name": "intf-1/123",
+	  "device-name": "dev123",
+	  "interface-type": "iana-if-type:other",
+	  "action": "CREATE",
+	  "description": "This is an interface",
+	  "vlan-id": "22",
+	  "ip-addresses-v4": [
+	    {
+	      "ip-address": "192.168.1.1",
+	      "prefix-length": "24",
+  	      "array2": [
+    		           {
+    		        	   "val1": "one",
+    		        	   "val2": "two"
+    		           }
+    		       ]
+	    },
+	    {
+	      "ip-address": "192.168.2.1",
+	      "prefix-length": "24",
+  	      "array2": [
+  		           {
+  		        	   "val1": "one",
+  		        	   "val2": "two"
+  		           }
+  		       ]
+	    }
+	  ]
+	}
+
+
+// This should detect an error with val1
+//outputSchema {
+//	"interface": [
+//      {
+//        "name": "intf-1/123",
+//        "description": "This is an interface",
+//        "mtu": "${MTU}",
+//        "vlan-interface-std:vlan": {
+//          "ip-management-vlan-std:ip": {
+//            "address": [
+//              {
+//                "ip": "${ADDRESS4[*]}",
+//                "prefix-length": "${ADDRESS4LEN[*]}",
+//          	      "array2": [
+//      		           {
+//      		        	   "val1": "${val1[*]",
+//      		        	   "val2": "${val2[*]"
+//      		           }
+//      		       ]
+//              }
+//            ]
+//          }
+//        },
+//        "type": "vlan-interface-std:l3ipvlan"
+//      }
+//    ]
+//  }

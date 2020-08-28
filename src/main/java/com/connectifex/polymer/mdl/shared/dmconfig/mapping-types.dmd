@@ -1,0 +1,57 @@
+EnumDefinition
+name             MappingKeywordEnum
+nullReturnValue	 MappingKeywordEnum.UNKNOWN
+enumValue		0 UNKNOWN		An unknown keyword.
+enumValue		1 DOC_VERSION 	Contains the name of the version of the OC to ONF Mapping document
+enumValue		2 USE_CASE 		Specifies an overall use case that may contain multiple MAPPING indications.
+enumValue		3 HEADER 		Indicates header information anywhere in the document so that it’s obvious which columns are which.
+enumValue		4 MAPPING 		Specifies a title for a particular mapping associated with a USE_CASE.
+enumValue		5 FROM_MODEL 	A single row that defines a model from which we are translating. If there are multiple models, they should each be defined in a separate row.
+enumValue		6 TO_MODEL 		A single row that defines a model to which we are translating. If there are multiple models, they should each be defined in a separate row.
+enumValue		7 TYPE_MODEL 	When specifying the type of the parameters in the MAP operations, the base Yang types can be referred to directly. For all other types you must specify the model in which the type is defined (see the MAP keyword for details)
+enumValue		8 MAP 			An indication of how a single value in ONF is mapped to a value in the OC model.
+enumValue		9 MAP_ANY 		An indication of how any of several paths in ONF are mapped to a value in the OC model.
+enumValue		10 MAP_COMPLEX 	In some cases you have the situation where multiple values in one model are mapped to a single value in another model. In that case, you specify MAP_COMPLEX and indicate the full path for model that has the individual values and a single row (the first row) to indicate where the multiple values are aggregated.
+enumValue		11 MAP_COMPLEX_SEPARATOR 		In some cases the single value in a MAP_COMPLEX uses a special character to separate the fields - you use this keyword to do that.
+enumValue		12 NOTE 			A note/comment regarding something in the specification. Generally, these would follow a MAP specification.
+enumValue		13 ENUM_MAPPING 	The name of an enum mapping that can be referred to in Column H of a MAP specification.
+enumValue		14 VALUE 			A value from an enumeration in ONF and the corresponding value of the enumeration in Openconfig.
+enumValue		15 CONVERSION 		A note/comment regarding the conversion of a value in ONF to one in Openconfig. Generally, these would follow a MAP specification.
+enumValue		16 PLASTIC_PREFIX 		The prefix for the construction of the plastic mapping file for a particular mapping.
+enumValue		17 PLASTIC_VERSION 		The version of the plastic mapping file.
+enumValue		18 URL_PREFIX 		Indicates a common URL prefix that leads up to the model for which we’re defining the current mapping.
+enumValue		19 OPERATIONS 		A space separated list of operations supported for this MAPPING.
+enumValue		20 DEVICE_SUPPORT 	Indicates that want to generate plastic files to support a particular vendor, device type and version..
+description		Indicates the various keywords that are used in the first column of a mapping template.
+
+EnumDefinition
+name             RESTOperationTypeEnum
+nullReturnValue	 RESTOperationTypeEnum.GET
+enumValue		0 GET		The mapping supports GET.
+enumValue		1 PUT 		The mapping supports PUT.
+enumValue		2 DELETE 	The mapping supports DELETE.
+description The type of REST operation a mapping supports.
+
+EnumDefinition
+name             FromToEnum
+nullReturnValue	 FromToEnum.FROM
+enumValue		0 FROM		The from side of a schema.
+enumValue		1 TO 		The to side of a schema.
+description Indicates the side of the schema translation we're dealing with.
+
+EnumDefinition
+name             ElementTypeEnum
+nullReturnValue	 ElementTypeEnum.OBJECT
+enumValue		0 OBJECT			The element is an object.
+enumValue		1 ARRAY 			The element is an array/list.
+enumValue		2 PRIMITIVE 		The element is a primitive value.
+//enumValue		2 INDEXED_ARRAY 	The element is an indexed array.
+description Indicates the type of an element in an input/output schema.
+
+EnumDefinition
+name             PrimitiveTypeEnum
+nullReturnValue	 PrimitiveTypeEnum.STRING
+enumValue		0 STRING		A string.
+enumValue		1 NUMBER 		A number.
+enumValue		2 BOOLEAN 		A boolean.
+description Indicates the basic type of a primitive value.

@@ -1,0 +1,208 @@
+// Generated from: org.dmd.dsd.tools.dsdwizard.DSLArtifactGenerator.createAttributesFile(DSLArtifactGenerator.java:375)
+
+AttributeDefinition
+name           mapping
+dmdID          6000
+type           PlasticMapping
+description    <font color="red">plastic:</font>A reference to a PlasticMapping.
+
+AttributeDefinition
+name           inputPayload
+dmdID          6001
+type           String
+description    <font color="red">plastic:</font>A payload to be used as plastic input.
+
+AttributeDefinition
+name           inputVersion
+dmdID          6002
+type           String
+nullReturnValue "1.0"
+description    <font color="red">plastic:</font>The version of an input schema.
+
+AttributeDefinition
+name           outputVersion
+dmdID          6003
+type           String
+nullReturnValue "1.0"
+description    <font color="red">plastic:</font>The version of an output schema.
+
+AttributeDefinition
+name           inputType
+dmdID          6004
+type           SchemaTypeEnum
+nullReturnValue	SchemaTypeEnum.JSON
+description    <font color="red">plastic:</font>The type of the input schema.
+
+AttributeDefinition
+name           outputType
+dmdID          6005
+type           SchemaTypeEnum
+nullReturnValue	SchemaTypeEnum.JSON
+description    <font color="red">plastic:</font>The type of the output schema.
+
+AttributeDefinition
+name           inFolder1
+dmdID          6006
+type           FolderAndNote
+description    <font color="red">plastic:</font>First level of an input schema or morpher folder
+ structure. 
+
+AttributeDefinition
+name           inFolder2
+dmdID          6007
+type           FolderAndNote
+description    <font color="red">plastic:</font>Second level of an input schema or morpher folder
+ structure. 
+
+AttributeDefinition
+name           inFolder3
+dmdID          6008
+type           FolderAndNote
+description    <font color="red">plastic:</font>Third level of an input schema or morpher folder
+ structure. 
+
+AttributeDefinition
+name           inputSchema
+dmdID          6009
+type           PlasticSchema
+preserveNewlines	true
+description    <font color="red">plastic:</font>The input schema for a mapping.
+
+AttributeDefinition
+name           outputSchema
+dmdID          6010
+type           PlasticSchema
+preserveNewlines	true
+description    <font color="red">plastic:</font>The output schema for a mapping.
+
+AttributeDefinition
+name           variables
+dmdID          6011
+type           PlasticVariable
+valueType		MULTI
+description    <font color="red">plastic:</font>The variables used in the input/output
+ schemas associated with a mapping. 
+
+AttributeDefinition
+name           outFolder1
+dmdID          6012
+type           FolderAndNote
+description    <font color="red">plastic:</font>First level of an output schema or morpher folder
+ structure. 
+
+AttributeDefinition
+name           outFolder2
+dmdID          6013
+type           FolderAndNote
+description    <font color="red">plastic:</font>Second level of an outputa schema or morpher folder
+ structure. 
+
+AttributeDefinition
+name           outFolder3
+dmdID          6014
+type           FolderAndNote
+description    <font color="red">plastic:</font>Third level of an output schema or morpher folder
+ structure. 
+
+AttributeDefinition
+name           folderStructure
+dmdID          6015
+type           FolderStructure
+description    <font color="red">plastic:</font>A reference to a FolderStructure to be used for a mapping.
+ structure. 
+
+AttributeDefinition
+name           morpherInVariables
+dmdID          6016
+type           PlasticVariable
+valueType		MULTI
+description    <font color="red">plastic:</font>The morpherInVariables refer to variables that are
+ intended as input to a morpher. Generally speaking, these variables don't appear in the output schema. 
+ Rather, they are used within the morpher to configure its behavior and potentially create other variables
+ required in the output schema.
+
+AttributeDefinition
+name           morpherOutVariables
+dmdID          6017
+type           PlasticVariable
+valueType		MULTI
+description    <font color="red">plastic:</font>The morpherOutVariables refer to variables that are
+ created by a morpher i.e. they are not provided in the input schema.
+
+AttributeDefinition
+name           expectedResult
+dmdID          6018
+type           PlasticResultEnum
+description    <font color="red">plastic:</font>Indicates the result we expect to find during a test run.
+
+AttributeDefinition
+name           values
+dmdID          6019
+type           StringValue
+valueType		MULTI
+description    <font color="red">plastic:</font>A set of allowed string values.
+
+AttributeDefinition
+name           	pattern
+dmdID          	6020
+type			String
+//valueType		MULTI
+description		<font color="red">plastic:</font> Indicates a regular expression that represents a string pattern.
+
+AttributeDefinition
+name           	group
+dmdID          	6021
+type			PlasticGroupAndName
+valueType		MULTI
+description		<font color="red">plastic:</font> Indicates the pattern group and a name for that section of the pattern.
+
+AttributeDefinition
+name           	normalizedForm
+dmdID          	6022
+type           	String
+description <font color="red">plastic:</font> The specification of the normalized form of a PlasticPattern that represents an
+ almost (but not quite) correct form of something, such as a circuit ID. Although the PlasticPattern
+ is able to distinguish the groups that comprise the pattern, certain separator characters may be missing.
+ For example, the standard form of a circuit ID might be:
+ <pre>
+ 32.VLXP.031097..NY
+ </pre>
+ There are 4 tuples - which might be named tuple1 through tuple4.
+ <p/>
+ If a pattern was defined that could distinguish the basic structure without the dots, for instance:
+ <pre>
+ 32VLXP031097NY
+ </pre>
+ We could describe the normalizedForm as:
+ <pre>
+ %tuple1%.%tuple2%.%tuple3%..%tuple4%
+ </pre>
+ You simply bracket the name of a group in the PlasticPattern with % and insert any other characters you
+ need to create the normalized form.
+
+AttributeDefinition
+name           	usePattern
+dmdID          	6023
+type           	PlasticPattern
+description		Indicates the patterns to be used when running a PatternTest.
+
+AttributeDefinition
+name           	input
+dmdID          	6024
+type           	TestInput
+description		The input for a PatternTest.
+
+AttributeDefinition
+name           	expectThat
+dmdID          	6025
+type           	ExpectedGroupValue
+valueType		MULTI
+description		The input for a PatternTest.
+
+AttributeDefinition
+name           	cases
+dmdID          	6026
+type           	YangCase
+valueType		MULTI
+description		The cases associated with a choice.
+
