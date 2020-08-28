@@ -12,10 +12,6 @@ defFiles          complex.dmd
 defFiles          attributes.dmd
 defFiles          classes.dmd
 // 5000
-defFiles          mapping-types.dmd
-defFiles          mapping-complex.dmd
-defFiles          mapping-attributes.dmd
-defFiles          mapping-classes.dmd
 // 6000
 defFiles          plastic-types.dmd
 defFiles          plastic-complex.dmd
