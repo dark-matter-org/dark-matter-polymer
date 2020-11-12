@@ -60,6 +60,10 @@ public class YangStructure {
 	// Value: Its content as a YangStructure
 	private TreeMap<String, YangStructure>				imports;
 	
+	// Key: the prefix attribute of an import
+	// Value: Its content as a YangStructure
+	private TreeMap<String, YangStructure>				importsByPrefix;
+	
 	private ArrayList<YangAttribute>						attributes;
 	private TreeMap<String, ArrayList<YangAttribute>>	 	attributesByName;
 	
@@ -168,6 +172,14 @@ public class YangStructure {
 		if ((depth > 1) && type.equals(YangConstants.GROUPING)) {
 			parent.storeLocalGrouping(this);
 		}
+	}
+	
+	/**
+	 * Can be used on substructures to get their containing module.
+	 * @return
+	 */
+	public YangStructure moduleWhereYouAreDefined() {
+		return(module);
 	}
 	
 	public YangStructure findTypeInLocalScope(String typeName) {
@@ -335,7 +347,7 @@ public class YangStructure {
 					
 					if (context.isLoaded(version)) {
 						YangDebugChannels.moduleImport.getChannel().publish("Import already loaded: " + version.nameAndRevision());
-						addImport(fileName,context.getLoaded(version));
+						addImport(fileName, child.singleAttribute(YangConstants.PREFIX), context.getLoaded(version));
 					}
 					else {
 					
@@ -346,7 +358,7 @@ public class YangStructure {
 						parser.trace(trace);
 						
 						YangStructure module = parser.parse(version.location().getDirectory(), version.nameAndRevision() + ".yang");
-						addImport(fileName, module);
+						addImport(fileName, child.singleAttribute(YangConstants.PREFIX), module);
 						
 						YangDebugChannels.moduleImport.getChannel().publish("Import loaded: " + version.nameAndRevision() + " " + version.location().getDirectory());
 						context.loaded(version, module);
@@ -368,12 +380,32 @@ public class YangStructure {
 		
 	}
 	
-	private void addImport(String name, YangStructure module) {
-		if (imports == null)
+	private void addImport(String name, YangAttribute prefix, YangStructure module) {
+		if (imports == null) {
 			imports = new TreeMap<>();
+			importsByPrefix = new TreeMap<>();
+		}
 		
 		imports.put(name, module);
 		
+		if (prefix != null) {
+//			DebugInfo.debug("IMPORT " + prefix.value());
+			importsByPrefix.put(prefix.value(), module);
+		}
+		
+	}
+	
+	public YangStructure getImportByPrefix(String prefix) {
+		if (importsByPrefix == null)
+			return(null);
+		return(importsByPrefix.get(prefix));
+	}
+	
+	public YangStructure getImport(String name) {
+		if (imports == null)
+			return(null);
+		
+		return(imports.get(name));
 	}
 	
 	/**
@@ -466,15 +498,15 @@ public class YangStructure {
 	 */
 	public YangAttribute addAttribute(String singleAttr) {
 		
-		if (type.equals(YangConstants.USES)) {
-			if (YangConstants.nameIsValid(singleAttr)) {
-				DebugInfo.debug("Simple USES: " + singleAttr);
-			}
+//		if (type.equals(YangConstants.USES)) {
+//			if (YangConstants.nameIsValid(singleAttr)) {
+//				DebugInfo.debug("Simple USES: " + singleAttr);
+//			}
 //			if(!YangConstants.hasSpecialCharacters(singleAttr)) {
 //				DebugInfo.debug("Simple USES: " + singleAttr);
 //			}
 			
-		}
+//		}
 //		DebugInfo.debug(singleAttr);
 		if (attributes == null) {
 			attributes = new ArrayList<>();
@@ -613,6 +645,7 @@ public class YangStructure {
 		sb.append(indent + type + "  " + name + "\n");
 		if (parent != null)
 			sb.append(indent + "  fqn: " + getFullyQualifiedName() + "\n");
+		
 		if (attributes != null) {
 			for(YangAttribute attr: attributes) {
 				sb.append(indent + "  +" + attr + "\n");

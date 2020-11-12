@@ -125,7 +125,7 @@ public class YangUtil {
 			moduleName = moduleName.substring(0, amperpos);
 		}
 		
-		DebugInfo.debug("Module name: " + moduleName);
+//		DebugInfo.debug("Module name: " + moduleName);
 		
 		TreeMap<String,ModuleVersion> versions = context.getVersions(moduleName);
 		if (versions == null) {

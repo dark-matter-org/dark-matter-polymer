@@ -20,15 +20,49 @@ import java.util.Iterator;
 public class Helper {
 
 	static public YangStructure getGrouping(YangStructure module, YangStructure node, String gname) {
-		YangStructure rc = node.findGroupingInLocalScope(gname);
+		YangStructure rc = null;
 		
-		if (rc == null) {
-			Iterator<YangStructure> children = module.children();
-			while(children.hasNext()) {
-				YangStructure child = children.next();
-				if (child.type().equals(YangConstants.GROUPING)) {
-					if (child.name().equals(gname)) {
-						rc = child;
+		if (gname.contains(":")) {
+			YangStructure moduleToSearch = module;
+			
+			String prefix = gname.substring(0, gname.indexOf(':'));
+			String gnamePart = gname.substring(gname.indexOf(':')+1);
+			
+			// Get the prefix defined within the module itself - if available
+			YangAttribute modulePrefix = module.singleAttribute(YangConstants.PREFIX);
+			if (modulePrefix == null) {
+				moduleToSearch = module.getImportByPrefix(prefix);
+			}
+			else {
+				if (modulePrefix.value().equals(prefix))
+					moduleToSearch = module;
+				else
+					moduleToSearch = module.getImportByPrefix(prefix);
+			}
+			
+			rc = moduleToSearch.findGroupingInLocalScope(gnamePart);
+			
+			if (rc == null) {
+				Iterator<YangStructure>	groupings = moduleToSearch.childrenOfType(YangConstants.GROUPING);
+				while(groupings.hasNext()) {
+					YangStructure group = groupings.next();
+					if (group.name().equals(gnamePart)) {
+						rc = group;
+						break;
+					}
+				}
+			}
+
+		}
+		else {
+			rc = node.findGroupingInLocalScope(gname);
+			
+			if (rc == null) {
+				Iterator<YangStructure>	groupings = module.childrenOfType(YangConstants.GROUPING);
+				while(groupings.hasNext()) {
+					YangStructure group = groupings.next();
+					if (group.name().equals(gname)) {
+						rc = group;
 						break;
 					}
 				}

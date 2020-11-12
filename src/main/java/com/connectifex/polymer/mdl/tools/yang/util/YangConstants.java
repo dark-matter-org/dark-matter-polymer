@@ -49,6 +49,7 @@ public class YangConstants {
 	public static String DESCRIPTION 		= "description";
 	public static String FRACTION_DIGITS 	= "fraction-digits";
 	public static String IF_FEATURE 		= "if-feature";
+	public static String IMPORT 			= "import";
 	public static String INCLUDE 			= "include";
 	public static String KEY 				= "key";
 	public static String LENGTH 			= "length";

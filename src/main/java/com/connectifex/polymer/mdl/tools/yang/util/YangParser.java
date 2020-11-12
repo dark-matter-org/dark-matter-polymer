@@ -58,6 +58,7 @@ public class YangParser {
 	private final static String OPEN_COMMENT = "/*";
 	private final static String CLOSE_COMMENT = "*/";
 	private final static String PATTERN = "pattern";
+	private final static String POSIX_PATTERN = "posix-pattern";
 	private final static String DEVIATION = "deviation";
 	
 //	private YangFinder		finder;
@@ -765,6 +766,20 @@ public class YangParser {
 					if ((firstQ < open) && (secondQ > close))
 						return(rc);
 				}
+			}
+			// Explicitly check if the line indicates a pattern specification
+			// Examples from openconfig-inet-types
+			//		      pattern '^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|'        +
+			//              '25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4]'  +
+			//              '[0-9]|25[0-5])$';
+			//            oc-ext:posix-pattern '^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|'        +
+			//              '25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4]'  +
+			//              '[0-9]|25[0-5])$';
+			else if (line.startsWith(PATTERN)) {
+				return(false);
+			}
+			else if (line.contains(POSIX_PATTERN)) {
+				return(false);
 			}
 			rc = true;			
 		}

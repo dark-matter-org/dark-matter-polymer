@@ -22,6 +22,7 @@ import java.util.TreeMap;
 
 import org.dmd.dmc.types.IntegerVar;
 import org.dmd.dmu.util.json.PrettyJSON;
+import org.dmd.util.exceptions.DebugInfo;
 import org.dmd.util.formatting.PrintfFormat;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -56,18 +57,26 @@ public class YangToPolymer {
 	private Stack<ChoiceInfo>				choiceStack;
 	private Stack<String>					caseStack;
 	
+	// Used in cases where we need to generate a unique name because we don't
+	// have a parent element. We increment this as required.
+	private int								uniqueID;
+	
 	public YangToPolymer() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	public void convert(YangContext context, YangStructure module, ModuleVersion version) {
 		this.module		= module;
+		this.uniqueID	= 1;
+		
 		System.out.println();
+		
+		boolean anyThingDumped = false;
 		
 		Iterator<YangStructure>	containers = module.childrenOfType(YangConstants.CONTAINER);
 		while(containers.hasNext()) {
 			variablesByName 	= new TreeMap<>();
-			choicesByUniqueName 		= new TreeMap<>();
+			choicesByUniqueName = new TreeMap<>();
 			choiceUsageCount	= new TreeMap<>();
 			choiceStack 		= new Stack<>();
 			caseStack 			= new Stack<>();
@@ -80,11 +89,49 @@ public class YangToPolymer {
 //			PlasticGlobals.instance().trace(PrettyJSON.instance().prettyPrint(object, true));
 						
 			dumpInputSchema(module,version);
+			anyThingDumped = true;
 			
 			for(ChoiceInfo choice: choicesByUniqueName.values()) {
 				System.out.println(choice.toYangChoice() + "\n");
 			}
 		}
+		
+		ArrayList<YangAttribute> attrs = module.attribute(YangConstants.USES);
+		if (attrs != null) {
+			for(YangAttribute ya: attrs) {
+//				DebugInfo.debug("uses: " + ya.value());
+	
+				Iterator<YangStructure>	groupings = module.childrenOfType(YangConstants.GROUPING);
+				while(groupings.hasNext()) {
+					YangStructure grouping = groupings.next();
+					if (grouping.name().equals(ya.value())) {
+						variablesByName 	= new TreeMap<>();
+						choicesByUniqueName = new TreeMap<>();
+						choiceUsageCount	= new TreeMap<>();
+						choiceStack 		= new Stack<>();
+						caseStack 			= new Stack<>();
+						
+						object = new JSONObject();
+						descend(grouping, "", 1, object);
+						
+	//					PlasticGlobals.instance().trace(PrettyJSON.instance().prettyPrint(object, true));
+									
+						dumpInputSchema(module,version);
+						anyThingDumped = true;
+						
+						for(ChoiceInfo choice: choicesByUniqueName.values()) {
+							System.out.println(choice.toYangChoice() + "\n");
+						}
+					}
+				}
+	
+			}
+		}
+		
+		if (!anyThingDumped) {
+			System.out.println("\nThe module you specified has no top level containers or uses statements, so nothing could be generated\n\n");
+		}
+		
 	}
 	
 	private void dumpInputSchema(YangStructure module, ModuleVersion version) {
@@ -113,8 +160,9 @@ public class YangToPolymer {
 			if (uses != null) {
 				PlasticGlobals.instance().trace(indent + "Uses entries: " + uses.size());
 				for(YangAttribute attr: uses) {
-					PlasticGlobals.instance().trace(indent + "Uses: " + attr.value());							
-					YangStructure grouping = Helper.getGrouping(module, node, attr.value());
+					PlasticGlobals.instance().trace(indent + "Uses: " + attr.value());	
+					
+					YangStructure grouping = Helper.getGrouping(node.moduleWhereYouAreDefined(), node, attr.value());
 					
 					if (grouping == null) {
 						throw(new IllegalStateException("Could not find grouping: " + attr.value()));
@@ -137,8 +185,9 @@ public class YangToPolymer {
 			if (uses != null) {
 				PlasticGlobals.instance().trace(indent + "Uses entries: " + uses.size());
 				for(YangAttribute attr: uses) {
-					PlasticGlobals.instance().trace(indent + "Uses: " + attr.value() + "\n");							
-					YangStructure grouping = Helper.getGrouping(module, node, attr.value());
+					PlasticGlobals.instance().trace(indent + "Uses: " + attr.value() + "\n");	
+					
+					YangStructure grouping = Helper.getGrouping(node.moduleWhereYouAreDefined(), node, attr.value());
 					
 					if (grouping == null) {
 						throw(new IllegalStateException("Could not find grouping: " + attr.value()));
@@ -163,8 +212,9 @@ public class YangToPolymer {
 			if (uses != null) {
 				PlasticGlobals.instance().trace(indent + "Uses entries: " + uses.size());
 				for(YangAttribute attr: uses) {
-					PlasticGlobals.instance().trace(indent + "Uses: " + attr.value() + "\n");							
-					YangStructure grouping = Helper.getGrouping(module, node, attr.value());
+					PlasticGlobals.instance().trace(indent + "Uses: " + attr.value() + "\n");		
+					
+					YangStructure grouping = Helper.getGrouping(node.moduleWhereYouAreDefined(), node, attr.value());
 					
 					if (grouping == null) {
 						throw(new IllegalStateException("Could not find grouping: " + attr.value()));
@@ -273,6 +323,8 @@ public class YangToPolymer {
 	 * @return
 	 */
 	private VariableInfo addVariable(YangStructure yang) {
+		PlasticGlobals.instance().trace("addVariable: " + yang.getFullyQualifiedName());
+		
 		String name = yang.name();
 		if (yang.isInList())
 			name = name + "[]";
@@ -298,19 +350,35 @@ public class YangToPolymer {
 			YangStructure parent = yang.parent();
 			while(true) {
 				if (parent == null) {
+//					PlasticGlobals.instance().trace("Could not create unique name based on hierarchy!");
+//					PlasticGlobals.instance().trace("For YangStructure: " + yang.name() + " fqn: " + yang.getFullyQualifiedName());
+//					System.exit(1);
+					
+					name = name + "--" + uniqueIdSuffix();
+					
+					existing = variablesByName.get(name);
+					if (existing == null) {
+						existing = new VariableInfo(name, yang);
+						variablesByName.put(existing.name(), existing);
+						break;
+					}
+
 					PlasticGlobals.instance().trace("Could not create unique name based on hierarchy!");
 					PlasticGlobals.instance().trace("For YangStructure: " + yang.name() + " fqn: " + yang.getFullyQualifiedName());
 					System.exit(1);
+
 				}
-				name = parent.name() + "--" + name;
-				
-				existing = variablesByName.get(name);
-				if (existing == null) {
-					existing = new VariableInfo(name, yang);
-					variablesByName.put(existing.name(), existing);
-					break;
+				else {
+					name = parent.name() + "--" + name;
+					
+					existing = variablesByName.get(name);
+					if (existing == null) {
+						existing = new VariableInfo(name, yang);
+						variablesByName.put(existing.name(), existing);
+						break;
+					}
+					parent = parent.parent();
 				}
-				parent = parent.parent();
 			}
 		}
 		
@@ -324,5 +392,18 @@ public class YangToPolymer {
 		
 		return(existing);
 	}
+	
+	private String uniqueIdSuffix() {
+		String rc = "";
+		if (uniqueID < 10)
+			rc = "00" + uniqueID;
+		else if (uniqueID < 100)
+			rc = "0" + uniqueID;
+		else
+			rc = "" + uniqueID;
 		
+		uniqueID++;
+		
+		return(rc);
+	}
 }
