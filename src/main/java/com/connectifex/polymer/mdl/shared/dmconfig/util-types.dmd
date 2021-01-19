@@ -1,0 +1,16 @@
+// Type definitions
+
+TypeDefinition
+name 			TemplateString
+typeClassName	com.connectifex.polymer.mdl.shared.types.DmcTypeTemplateString
+primitiveType	com.connectifex.polymer.mdl.shared.types.TemplateString
+description		The TemplateString provides support for the definition of a string with
+ embedded parameter names. Parameters are designated using Jinja curlies as follows - {{parameter}}
+
+TypeDefinition
+name 			JSONTemplateString
+typeClassName	com.connectifex.polymer.mdl.shared.types.DmcTypeJSONTemplateString
+primitiveType	com.connectifex.polymer.mdl.shared.types.JSONTemplateString
+description		The JSONTemplateString provides support for the definition of a JSON 
+ compliant string with embedded parameter names.
+ Parameters are designated using Jinja curlies as follows - {{parameter}}

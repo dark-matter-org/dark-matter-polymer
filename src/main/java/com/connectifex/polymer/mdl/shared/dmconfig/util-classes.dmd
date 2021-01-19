@@ -1,0 +1,14 @@
+ClassDefinition
+name                        ParameterSet
+classType                   STRUCTURAL
+dmdID                       9000
+subpackage					util
+useWrapperType              EXTENDED
+derivedFrom                 PlasticBaseDefinition
+isNamedBy                   name
+must                        name
+must						parameterValues
+may							description
+description	<font color="red">intent:</font> A named set of parameter values that can be injected into a parameterized
+ request of some type e.g. YangConfiguration, CLIRequest etc.
+

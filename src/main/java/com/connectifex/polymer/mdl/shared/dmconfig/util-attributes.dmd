@@ -1,0 +1,6 @@
+AttributeDefinition
+name           	parameterValues
+dmdID          	9000
+type           	ParamWithValue
+valueType		MULTI
+description		<font color="red">util:</font> The specification of parameter and its value.

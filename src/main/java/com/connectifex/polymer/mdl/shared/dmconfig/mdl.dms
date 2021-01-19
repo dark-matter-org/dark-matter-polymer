@@ -17,6 +17,11 @@ defFiles          plastic-types.dmd
 defFiles          plastic-complex.dmd
 defFiles          plastic-attributes.dmd
 defFiles          plastic-classes.dmd
+// 9000
+defFiles          util-types.dmd
+defFiles          util-complex.dmd
+defFiles          util-attributes.dmd
+defFiles          util-classes.dmd
 defFiles          module.dmd
 schemaPackage     com.connectifex.polymer.mdl.shared
 dmwPackage        com.connectifex.polymer.mdl.server

@@ -1,0 +1,21 @@
+ComplexTypeDefinition
+name 			ParamWithValue
+requiredPart	String   	paramName	"The name of the parameter."
+requiredPart	String   	paramValue	"The associated value in quotes." quoted=true
+optionalPart	String   	note		"A note regarding this parameter."
+description		The ParamWithValue type allows for specification of a named parameter
+ and its associated value.
+ The micro grammar is:
+ <pre>
+ paramName paramValue [note]
+ </pre>
+ Where:
+ <ul>
+ <li> paramName  - The name of the parameter. </li>
+ <li> paramValue - The associated value in quotes. </li>
+ </ul>
+ Optional parts:
+ <ul>
+ <li>note - A note regarding this parameter. </li>
+ </ul>
+ <p/>

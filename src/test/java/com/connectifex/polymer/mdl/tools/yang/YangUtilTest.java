@@ -81,7 +81,7 @@ public class YangUtilTest {
 
 			String[] args = { "-srcdirs", openconfigDir, ietfDir, 
 					"-file", "openconfig-routing-policy",
-//					"-trace",
+					"-trace",
 //					"-plasticdir", plasticdir
 			};
 
