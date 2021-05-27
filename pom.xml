@@ -4,8 +4,34 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.connectifex</groupId>
 	<artifactId>polymer</artifactId>
-	<version>1.0.0</version>
-	<!-- 0.0.1-SNAPSHOT -->
+	<version>1.0.1</version>
+
+	<name>dark-matter-polymer</name>
+	<url>https://github.com/dark-matter-org/dark-matter-polymer</url>
+	<description>The polymer tool provides a simplified approach to take advantage of the OpenDaylight Plastic model-to-model translation mechanisms.</description>
+
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License, Version 3.0</name>
+			<url>https://www.gnu.org/licenses/lgpl-3.0.en.html</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Peter Strong</name>
+			<email>peter@connectifex.com</email>
+			<organization>connectifex</organization>
+			<organizationUrl>https://github.com/dark-matter-org</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<developerConnection>scm:git:git://github.com/dark-matter-org/dark-matter-polymer.git</developerConnection>
+		<url>https://github.com/dark-matter-org/dark-matter-polymer/tree/master</url>
+		<connection>scm:git:git://github.com/dark-matter-org/dark-matter-polymer.git</connection>
+		<tag></tag>
+	</scm>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -18,6 +44,17 @@
 			<url>https://nexus.opendaylight.org/content/repositories/public</url>
 		</repository>
 	</repositories>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 	<dependencies>
 		<!-- testing email -->
@@ -100,6 +137,64 @@
 				<configuration>
 					<reuseForks>false</reuseForks>
 					<forkCount>1</forkCount>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.1.1</version>
+				<configuration>
+					<doclint>none</doclint>  <!-- Turnoff all checks -->
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
 
@@ -212,5 +307,7 @@
 
 		</plugins>
 	</build>
+
+
 
 </project>
