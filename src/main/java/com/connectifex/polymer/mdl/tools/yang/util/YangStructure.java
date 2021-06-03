@@ -37,10 +37,12 @@ import org.dmd.util.exceptions.ResultException;
  */
 public class YangStructure {
 	
-	private static String NACM = "nacm";
-	private static String INCLUDE = "include";
-	private static String IMPORT = "import";
-	private static String GROUPING = "grouping";
+	public static String NACM		= "nacm";
+	public static String INCLUDE	= "include";
+	public static String IMPORT		= "import";
+	public static String GROUPING	= "grouping";
+	public static String CONTAINER	= "container";
+	public static String KEY		= "key";
 
 	private String type;
 	private String name;
@@ -783,6 +785,21 @@ public class YangStructure {
 		return(depth);
 	}
     
+    public TreeMap<String, YangHierarchyNode> getPaths(){
+    	if (parent != null)
+    		throw(new IllegalStateException("Should only call this on the root."));
+    	
+    	TreeMap<String, YangHierarchyNode> rc = new TreeMap<String, YangHierarchyNode>();
+    	
+    	pathDescent(null, rc);
+    	
+    	return(rc);
+    }
     
+    private void pathDescent(YangHierarchyNode parent, TreeMap<String, YangHierarchyNode> paths) {
+    	if (type.equals(CONTAINER)) {
+    		
+    	}
+    }
 
 }
