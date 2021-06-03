@@ -190,8 +190,15 @@ public class YangUtil {
 			return;
 		}
 		
-		YangToPolymer ytp = new YangToPolymer();
-		ytp.convert(context,root,version);
+		// NOTE: this was the old style extract that only showed the entire structure with no path
+		// information - the new form shows the leaf contains complete with their path
+//		YangToPolymer ytp = new YangToPolymer();
+//		ytp.convert(context,root,version);
+//		
+//		System.out.println("\n\nHIERARCHY\n\n");
+		
+		YangToPolymerHierarchy ytph = new YangToPolymerHierarchy();
+		ytph.convert(context, root, version);
 		
 //		Iterator<YangStructure> it = context.getAllLoadedModules();
 //		while(it.hasNext()) {

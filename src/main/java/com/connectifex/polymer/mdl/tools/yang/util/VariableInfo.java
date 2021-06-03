@@ -185,6 +185,13 @@ public class VariableInfo {
 	public String name() {
 		return(name);
 	}
+	
+	/**
+	 * @return the YangStructure associated with this variable
+	 */
+	public YangStructure structure() {
+		return(yang);
+	}
 		
 	/**
 	 * @return the plastic variable specification with ${ }
@@ -227,6 +234,36 @@ public class VariableInfo {
 		
 		if (description!= null)
 			sb.append(" note=\"" + description +"\"");
+		
+		if (type!= null)
+			sb.append(" type=\"" + type +"\"");
+		
+		if (units!= null)
+			sb.append(" units=\"" + units +"\"");
+		
+		// We don't add this is there's only a single case
+		if (choice != null && choice.moreThanOneCase())
+			sb.append(" choice=" + choice.uniqueName() + "");
+			
+		return(sb.toString());
+	}
+
+	/**
+	 * Dumps the variable without the (sometimes lengthy) description note
+	 * @param format the 
+	 * @return
+	 */
+	public String toVariableFormatNoNote(PrintfFormat format) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("variables ");
+		
+		sb.append(format.sprintf(variableInsert));
+		
+		if (defaultValue != null)
+			sb.append(" default=\"" + defaultValue + "\"");
+		
+//		if (description!= null)
+//			sb.append(" note=\"" + description +"\"");
 		
 		if (type!= null)
 			sb.append(" type=\"" + type +"\"");

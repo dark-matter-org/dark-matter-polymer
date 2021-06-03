@@ -2,3 +2,11 @@
 
 // This a placeholder file for type definitions.
 
+EnumDefinition
+name             HierarchyTypeEnum
+nullReturnValue	 PlasticResultEnum.OKAY
+enumValue		0 CONTAINER		A container
+enumValue		1 OBJECT_LIST 	An object list
+enumValue		2 LEAF_LIST 	A leaf list.
+enumValue		3 USES_LIST 	A uses list.
+enumValue		4 GROUPING 		A grouping.

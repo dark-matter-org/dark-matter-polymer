@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.connectifex</groupId>
 	<artifactId>polymer</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 
 	<name>dark-matter-polymer</name>
 	<url>https://github.com/dark-matter-org/dark-matter-polymer</url>
